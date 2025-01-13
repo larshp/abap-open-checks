@@ -82,4 +82,16 @@ SELECT SINGLE time_zone FROM adrc INTO @DATA(lv_time_zone)
     expect(issues.length).to.equal(0);
   });
 
+  it("ok, method parameter", async () => {
+    const issues = await findIssues(`
+    "! Test comment 1
+    METHODS test_method_1 ABSTRACT
+      RETURNING VALUE(result) TYPE zsometype.
+
+    "! Test comment 2
+    METHODS test_method_2
+      RETURNING VALUE(result) TYPE zverylongclassname=>verylongtypenamelongerthan71 "#EC NEEDED
+      RAISING   zcx_exception.`);
+    expect(issues.length).to.equal(0);
+  });
 });
